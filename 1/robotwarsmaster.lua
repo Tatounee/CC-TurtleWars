@@ -8,6 +8,7 @@ end
 rednet.open(peripheral.getName(peripheral.find("modem")))
 
 rednet.host("robotwars", "master")
+rednet.host("robotwars_turtleNetwork", "master")
 
 local computers = {rednet.lookup("robotwars")}
 print(#computers .. " computers available")
@@ -18,7 +19,7 @@ for _, computer in pairs(computers) do
 function gameLoop()
     while true do
         rednet.broadcast("next turn", "robotwars")
-        print("loop")
+
         coroutine.yield(os.startTimer(timerInterval))
     end
 end
@@ -32,6 +33,6 @@ while true do
     elseif event == "timer" and data == timerID then
         _, timerID = coroutine.resume(Loop)
     elseif event == "rednet_message" then
-        print("Received message from " .. data .. " with message " .. tostring(message))
+        print( data .. " : " .. tostring(message))
     end
 end

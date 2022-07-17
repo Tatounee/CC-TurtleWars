@@ -8,51 +8,72 @@ end
 rednet.open(peripheral.getName(peripheral.find("modem")))
 
 rednet.host("robotwars", "robot1")
+local master = rednet.lookup("robotwars","master")
+local turtle = {
+    forward=function()
+        rednet.send(master, "forward")
+        repeat
+            local id, message = rednet.receive("robotwars")
+        until message == "next turn"
+    end,
+    back=function() 
+        rednet.send(master, "back")
+        repeat
+            local id, message = rednet.receive("robotwars")
+        until message == "next turn"
+    end,
+    turnLeft=function()
+        rednet.send(master, "turnLeft")
+        repeat
+            local id, message = rednet.receive("robotwars")
+        until message == "next turn"
+    end,
+    turnRight=function()
+        rednet.send(master, "turnRight")
+        repeat
+            local id, message = rednet.receive("robotwars")
+        until message == "next turn"
+    end,
+    dig=function()
+        rednet.send(master, "dig")
+        repeat
+            local id, message = rednet.receive("robotwars")
+        until message == "next turn"
+    end,
+    place=function()
+        rednet.send(master, "place")
+        repeat
+            local id, message = rednet.receive("robotwars")
+        until message == "next turn"
+    end,
+    drop=function()
+        rednet.send(master, "drop")
+        repeat
+            local id, message = rednet.receive("robotwars")
+        until message == "next turn"
+    end,
+    select=function()
+        rednet.send(master, "select")
+    end,
+    getItemCount=function()
+        rednet.send(master, "getItemCount")
+    end,
+    detect=function()
+        rednet.send(master, "detect")
+    end,
+    inspect=function()
+        rednet.send(master, "inspect")
+    end,
+}
 
-local computers = {rednet.lookup("chat")}
-
-function loop()
+function gameLoop()
     while true do
-        turtle = {
-            forward=function()
-                
-            end,
-            back=function() 
-                
-            end,
-            up=function() 
-                
-            end,
-            down=function() end,
-            turnLeft=function() end,
-            turnRight=function() end,
-            dig=function() end,
-            digUp=function() end,
-            digDown=function() end,
-            place=function() end,
-            placeUp=function() end,
-            placeDown=function() end,
-            drop=function() end,
-            select=function() end,
-            getItemCount=function() end,
-            getItemSpace=function() end,
-            detect=function() end,
-        }
-        coroutine.yield(turtle)
+        local id, message = rednet.recieve("robotwars")
+        print( id, message)
     end
 end
 
-
-while true do
-
-    local event, data, message, protocol = os.pullEventRaw()
-    if event == "terminate" then
-        break
-    elseif event == "rednet_message" and protocol == "robotwars" then
-        print("Received message from " .. data .. " with message " .. tostring(message))
-    elseif event == "rednet_message" and protocol == rednet.CHANNEL_BROADCAST then
-        print("Received message from " .. data .. " with message " .. tostring(message))
-    end
-end
+local Loop = coroutine.create(gameLoop)
+coroutine.resume(Loop)
 
 return turtle
