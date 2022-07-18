@@ -33,6 +33,5 @@ while true do
     elseif event == "timer" and data == timerID then
         _, timerID = coroutine.resume(Loop)
     elseif event == "rednet_message" then
-        print( data .. " : " .. tostring(message))
     end
-end
+end	end
