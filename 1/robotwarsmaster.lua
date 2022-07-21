@@ -1,5 +1,6 @@
 require("utils")
 
+local timerInterval = 2
 local event, id
 
 -- ---------------- "Equipe" le modem ajouté sur l'ordinateur --------------- --
